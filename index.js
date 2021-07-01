@@ -18,6 +18,22 @@ app.get("/",(req,res) => {
     res.json("Server is running.")
 })
 
+io.on("connection",(socket) =>{
+    socket.emit("me",socket.id);
+
+    socket.on("disconnect",() =>{
+        socket.broadcast.emit("callended");
+    });
+
+    socket.on("calluser",({userToCall, signalData, from, name}) => {
+        io.to(userToCall).emit("calluser",{signalData, from, name});
+    })
+
+    socket.on("answercall", (data) => {
+        io.to(data.to).emit("callaccept", data.signal);
+    })
+})
+
 server.listen(PORT, () => {             //here server is already present so no need for "app.listen()"
     console.log(`server is running on port ${PORT}`);
 })

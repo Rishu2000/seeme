@@ -3,7 +3,7 @@ const app = express();                              //Little expansion.
 const server = require("http").createServer(app);   //Used http server because need to get connected to the socket.io.
 const cors = require("cors");
 
-const io = require("socket.io")(server,{
+const io = require("socket.io")(server,{            //Require server info.
     cors:{
         origin:"*",
         methods:["GET","POST"]
